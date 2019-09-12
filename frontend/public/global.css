@@ -1,0 +1,42 @@
+.log-entry {
+  max-height: 15rem;
+  font-family: monospace;
+  overflow-y: scroll;
+}
+
+.log-row {
+  margin: 0.1rem;
+  border-radius: 0.2rem;
+  white-space: nowrap;
+  padding: 0 4px 0 4px;
+}
+
+.log-row:nth-child(odd) {
+  background-color: #ddf1face;
+}
+
+.log-row:nth-child(even) {
+  background-color: #ffffffc7;
+}
+
+.log-counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 8px 0 0;
+}
+
+.log-scroll-down {
+  user-select: none;
+  cursor: pointer;
+}
+.log-scroll-down:hover {
+  text-decoration: underline;
+}
+
+.login-action {
+  user-select: none;
+  cursor: pointer;
+  text-decoration: underline;
+  float: right;
+}

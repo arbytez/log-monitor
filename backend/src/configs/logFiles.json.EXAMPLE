@@ -1,0 +1,5 @@
+{
+  "exampleLog1": "/example/path/to/log1.log",
+  "exampleLog2": "/example/path/to/log2.txt",
+  "exampleLog3": "/example/path/to/log3.data"
+}

@@ -1,0 +1,25 @@
+type Query {
+  logged: Boolean!
+  watchedLogs: [InfoLogs]!
+}
+
+type Mutation {
+  login(password: String!): Boolean!
+  logout: Boolean!
+}
+
+type LogEvent {
+  from: String!
+  data: String!
+}
+
+type InfoLogs {
+  name: String!
+  path: String!
+}
+
+# type Subscription {
+#   log1: LogEvent!
+#   log2: LogEvent!
+#   log3: LogEvent!
+# }

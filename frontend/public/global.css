@@ -9,6 +9,7 @@
   border-radius: 0.2rem;
   white-space: nowrap;
   padding: 0 4px 0 4px;
+  height: 1.5rem;
 }
 
 .log-row:nth-child(odd) {

@@ -153,12 +153,12 @@
   <Hero />
   <section class="section">
     {#if !isLogged}
-      <p class="notification">
+      <p class="notification" style="font-size: 0.75rem;">
         You are not logged in.
         <span class="login-action" on:click={toggleModal}>Log In</span>
       </p>
     {:else}
-      <p class="notification">
+      <p class="notification" style="font-size: 0.75rem;">
         You are monitoring
         <strong>{watchedLogs.length}</strong>
         {watchedLogs.length !== 1 ? 'files' : 'file'}.

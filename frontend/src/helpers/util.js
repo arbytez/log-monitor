@@ -10,7 +10,7 @@ const addLog = (line, logName) => {
     logCounter.innerText = Number(logCounter.innerText) + 1;
     const scrollOffset = Math.abs(parent.scrollHeight - parent.scrollTop);
     // scroll only if the position of the scroll is near/to the end of the scroll height
-    if (scrollOffset < 210) {
+    if (scrollOffset < 270) {
       parent.scrollTop = parent.scrollHeight;
     }
   }

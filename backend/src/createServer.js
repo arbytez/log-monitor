@@ -13,6 +13,7 @@ const {
   SubscriptionTypeDefs
 } = require('./resolvers/Subscription');
 const pubsub = require('./pubsub');
+const { getCookieFromReq } = require('./utils');
 
 const schema = makeExecutableSchema({
   typeDefs: importSchema('src/schema.graphql').concat(SubscriptionTypeDefs),
@@ -57,6 +58,17 @@ function createServer() {
             );
             if (logged) {
               return { ...logged };
+            }
+          }
+        } catch (error) {}
+        try {
+          if (webSocket && webSocket.upgradeReq) {
+            const token = getCookieFromReq(webSocket.upgradeReq, 'token');
+            if (token) {
+              const logged = jwt.verify(token, process.env.JWT_SECRET);
+              if (logged) {
+                return { ...logged };
+              }
             }
           }
         } catch (error) {}

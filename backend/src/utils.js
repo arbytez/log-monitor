@@ -5,3 +5,17 @@ exports.hasPermission = (user, permissionsNeeded) => {
   );
   return matchedPermissions.length;
 };
+
+exports.getCookieFromReq = (req, cookieKey) => {
+  try {
+    const cookie = req.headers.cookie
+      .split(';')
+      .find(c => c.trim().startsWith(`${cookieKey}=`));
+    if (!cookie) {
+      return undefined;
+    }
+    return cookie.split('=')[1];
+  } catch (error) {
+    return undefined;
+  }
+};

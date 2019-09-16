@@ -11,6 +11,7 @@
   import LogSection from "../components/LogSection.svelte";
   import Loader from "../components/Loader.svelte";
   import { addLog } from "../helpers/util";
+  import tokenStore from "../stores/token-store";
 
   let isLogged = false;
   let isLoading = true;
@@ -23,7 +24,9 @@
 
   function subscribeToWatchedLogs() {
     observables.forEach(ob => {
-      ob.uns.unsubscribe();
+      if (ob.uns.unsubscribe) {
+        ob.uns.unsubscribe();
+      }
       ob = null;
     });
     observables = [];
@@ -85,12 +88,11 @@
         variables: { password: passwordInput.value }
       })
         .then(dataLogin => {
-          isPasswordCorrect = dataLogin.data.login;
-          if (isPasswordCorrect) {
-            isLogged = true;
-            subscribeToWatchedLogs();
-            toggleModal();
-          }
+          tokenStore.setToken(dataLogin.data.login);
+          isPasswordCorrect = true;
+          isLogged = true;
+          subscribeToWatchedLogs();
+          toggleModal();
           isLoadingLogin = false;
         })
         .catch(err => {
@@ -107,7 +109,9 @@
   async function logOut() {
     await execPromise({ query: LOGOUT_MUTATION });
     observables.forEach(ob => {
-      ob.uns.unsubscribe();
+      if (ob.uns.unsubscribe) {
+        ob.uns.unsubscribe();
+      }
       ob = null;
     });
     // observables.forEach(ws => {
@@ -138,7 +142,9 @@
 
   onDestroy(() => {
     observables.forEach(ob => {
-      ob.uns.unsubscribe();
+      if (ob.uns.unsubscribe) {
+        ob.uns.unsubscribe();
+      }
       ob = null;
     });
     // observables.forEach(ws => {

@@ -4,27 +4,17 @@ import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
-import { setContext } from 'apollo-link-context';
-import Cookies from 'js-cookie';
+
+import tokenStore from '../stores/token-store';
+
+let token = '';
+
+let unsubscribeTokenStore = tokenStore.subscribe(state => {
+  token = state;
+});
 
 const endpointHttp = process.env.ENDPOINT_HTTP;
 const endpointWs = process.env.ENDPOINT_WS;
-
-const getTokenCookie = () => {
-  const token = Cookies.get('token');
-  return token ? token : '';
-};
-
-const authLink = setContext((_, { headers }) => {
-  const token = getTokenCookie();
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: token
-    }
-  };
-});
 
 const httpLink = new HttpLink({
   uri: endpointHttp,
@@ -34,17 +24,14 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: endpointWs,
   options: {
-    reconnect: true,
-    connectionParams: {
-      authorization: getTokenCookie()
-    }
+    reconnect: true
   }
 });
 
 wsLink.subscriptionClient.use([
   {
     async applyMiddleware(options, next) {
-      options.authorization = getTokenCookie();
+      options.authorization = token;
       next();
     }
   }
@@ -70,7 +57,7 @@ const link = split(
     );
   },
   wsLink,
-  errorLink.concat(authLink.concat(httpLink))
+  errorLink.concat(httpLink)
 );
 
 // execute returns an Observable so it can be subscribed to
